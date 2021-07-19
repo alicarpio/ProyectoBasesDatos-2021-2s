@@ -1,4 +1,4 @@
-<img alt='on time logo' src='./assets/logo.png' width='50' />
+<img alt='on time logo' src='./assets/logo.png' width='100' align='right'/>
 
 # Proyecto Bases de Datos 
 
