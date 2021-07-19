@@ -1,4 +1,4 @@
-![on time logo](./assets/logo.png)
+<img alt='on time logo' src='./assets/logo.png' width='50' />
 
 # Proyecto Bases de Datos 
 
