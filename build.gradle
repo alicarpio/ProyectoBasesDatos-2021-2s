@@ -5,6 +5,9 @@ plugins {
 group 'org.example'
 version '1.0-SNAPSHOT'
 
+sourceCompatibility = 11
+targetCompatibility = 11
+
 repositories {
     mavenCentral()
 }
@@ -22,6 +25,21 @@ dependencies {
     implementation 'io.vertx:vertx-rx-java2:4.1.1'
     implementation 'io.vertx:vertx-web:4.1.1'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'on.time.Main'
+    }
+}
+
+task stage(dependsOn: ['build', 'clean'])
+
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)
 
 test {
     useJUnitPlatform()

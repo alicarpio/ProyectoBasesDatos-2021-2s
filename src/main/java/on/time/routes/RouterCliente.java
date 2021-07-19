@@ -4,6 +4,7 @@ import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.Vertx;
+import io.vertx.reactivex.core.http.HttpServerResponse;
 import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.RoutingContext;
 
@@ -33,8 +34,8 @@ public class RouterCliente {
             xs.add(x);
             return xs;
         }).subscribe(xs -> {
-            var response = ctx.response();
-            var responseObj = new JsonObject()
+            HttpServerResponse response = ctx.response();
+            JsonObject responseObj = new JsonObject()
                     .put("clientes", xs);
             response.putHeader("Content-Type", "application/json")
                     .end(responseObj.encode());
