@@ -1,13 +1,13 @@
 package on.time.model;
 
-public class Client {
+public class Cliente {
     private String nombreUsuario;
     private String nombre;
     private String apellido;
     private String correo;
     private String telefono;
 
-    public Client(String nombreUsuario, String nombre, String apellido, String correo, String telefono) {
+    public Cliente(String nombreUsuario, String nombre, String apellido, String correo, String telefono) {
         this.nombreUsuario = nombreUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
