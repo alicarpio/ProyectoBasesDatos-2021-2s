@@ -31,7 +31,7 @@ public class Main extends AbstractVerticle {
 
         return vertx.createHttpServer()
                 .requestHandler(router)
-                .rxListen(Integer.parseInt(System.getenv("PORT")))
+                .rxListen(Integer.parseInt(System.getProperty("server.port")))
                 .doOnSuccess(server -> logger.info("Server started on port " + server.actualPort()))
                 .doOnError(err -> logger.error("{}", err))
                 .ignoreElement();
