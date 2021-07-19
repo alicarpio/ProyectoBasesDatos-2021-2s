@@ -30,16 +30,13 @@ jar {
     manifest {
         attributes 'Main-Class': 'on.time.Main'
     }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = 'include'
 }
-
-task stage(dependsOn: ['build', 'clean'])
-
-task copyToLib(type: Copy) {
-    into "$buildDir/libs"
-    from(configurations.compile)
-}
-
-stage.dependsOn(copyToLib)
 
 test {
     useJUnitPlatform()
