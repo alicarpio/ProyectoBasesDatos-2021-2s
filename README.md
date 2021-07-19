@@ -1,6 +1,12 @@
+![on time logo](./assets/logo.png)
+
 # Proyecto Bases de Datos 
 
 Proyecto de la materia Bases de Datos, ESPOL
+
+## Modelo Lógico
+
+![modelo logico](./assets/modelo_logico.png)
 
 ## Dependencias
 
