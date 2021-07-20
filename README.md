@@ -30,6 +30,31 @@ commando:
 export DATABASE_URL=$(heroku run echo \$DATABASE_URL); gradle run
 ```
 
+## Hit el servidor
+
+Para ver los clientes registrados:
+
+```bash
+curl https://proyecto-sistemas-bases.herokuapp.com/api/v1/usuarios
+```
+
+Para ingresar un cliente:
+
+```bash
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -d '
+  {
+    "usuario": "jitomate123",
+    "contrasena": "jlkjlkjlj",
+    "nombre": "Dalinar",
+    "apellido": "Kholin",
+    "correo": "daddynar@gmail.com",
+    "telefono": "0995489331"
+  }' \
+  https://proyecto-sistemas-bases.herokuapp.com/api/v1/usuarios/crear
+```
+
 ## Evidencia
 
 - [Modelo Conceptual](./evidencias/modelo_conceptual)

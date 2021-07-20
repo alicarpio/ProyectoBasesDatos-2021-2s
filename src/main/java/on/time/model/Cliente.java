@@ -2,13 +2,16 @@ package on.time.model;
 
 public class Cliente {
     private String nombreUsuario;
+    private String contrasena;
     private String nombre;
     private String apellido;
     private String correo;
     private String telefono;
 
-    public Cliente(String nombreUsuario, String nombre, String apellido, String correo, String telefono) {
+    public Cliente(String nombreUsuario, String contrasena,
+                   String nombre, String apellido, String correo, String telefono) {
         this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -17,6 +20,10 @@ public class Cliente {
 
     public String getNombreUsuario() {
         return nombreUsuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
     }
 
     public String getNombre() {

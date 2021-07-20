@@ -8,6 +8,7 @@ import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.Router;
 
+import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import on.time.db.*;
 import on.time.model.*;
 import on.time.routes.RouterCliente;
@@ -21,6 +22,8 @@ public class Main extends AbstractVerticle {
         OnTimeStore<Cliente> clientStore = new OnTimeClientStore(db);
 
         Router router = Router.router(vertx);
+
+        router.route().handler(BodyHandler.create());
 
         router.route().method(HttpMethod.GET).path("/").handler(ctx -> {
             ctx.response().end("Bienvenido a nuestro proyecto!");
@@ -40,8 +43,8 @@ public class Main extends AbstractVerticle {
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
         vertx.deployVerticle(new Main(), res -> {
-            if (res.succeeded())
-                logger.info("Main verticle deployed");
+            if (res.succeeded()) logger.info("Main verticle deployed");
+            else logger.error("{}", res.cause());
         });
     }
 }

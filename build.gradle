@@ -14,16 +14,16 @@ repositories {
 
 application {
     mainClassName = 'on.time.Main'
+    applicationDefaultJvmArgs = ['-Dserver.port=4001']
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-
     implementation 'com.github.davidmoten:rxjava2-jdbc:0.2.7'
     implementation 'org.postgresql:postgresql:42.2.23'
     implementation 'io.vertx:vertx-rx-java2:4.1.1'
     implementation 'io.vertx:vertx-web:4.1.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+
 }
 
 jar {
@@ -36,8 +36,4 @@ jar {
     }
 
     duplicatesStrategy = 'include'
-}
-
-test {
-    useJUnitPlatform()
 }
