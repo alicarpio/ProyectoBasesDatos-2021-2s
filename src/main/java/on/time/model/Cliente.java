@@ -1,5 +1,9 @@
 package on.time.model;
 
+import io.vertx.core.json.JsonObject;
+
+import java.util.Optional;
+
 public class Cliente {
     private String nombreUsuario;
     private String contrasena;
@@ -16,6 +20,23 @@ public class Cliente {
         this.apellido = apellido;
         this.correo = correo;
         this.telefono = telefono;
+    }
+
+    public static Optional<Cliente> fromJson(JsonObject body) {
+        var nombreUsuario = body.getString("usuario");
+        var contrasena = body.getString("contrasena");
+        var nombre = body.getString("nombre");
+        var apellido = body.getString("apellido");
+        var correo = body.getString("correo");
+        var telefono = body.getString("telefono");
+
+        if (nombreUsuario == null || contrasena == null || nombre == null
+                || apellido == null || correo == null || telefono == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new Cliente(nombreUsuario, contrasena, nombre,
+                apellido, correo, telefono));
     }
 
     public String getNombreUsuario() {

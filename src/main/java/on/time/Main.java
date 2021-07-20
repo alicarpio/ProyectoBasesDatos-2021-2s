@@ -11,7 +11,7 @@ import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import on.time.db.*;
 import on.time.model.*;
-import on.time.routes.RouterCliente;
+import on.time.routes.RutaCliente;
 
 public class Main extends AbstractVerticle {
     public static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -29,7 +29,7 @@ public class Main extends AbstractVerticle {
             ctx.response().end("Bienvenido a nuestro proyecto!");
         });
 
-        RouterCliente routerUsuarios = new RouterCliente(vertx, clientStore);
+        RutaCliente routerUsuarios = new RutaCliente(vertx, clientStore);
         router.mountSubRouter("/api/v1/usuarios", routerUsuarios.getRouter());
 
         return vertx.createHttpServer()
