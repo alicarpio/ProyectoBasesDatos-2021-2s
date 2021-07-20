@@ -47,7 +47,7 @@ public class RutaCliente {
                     });
                 }, () -> ctx
                         .response()
-                        .setStatusCode(401)
+                        .setStatusCode(400)
                         .rxEnd(new JsonObject().put("error", "Missing fields").encode())
                         .subscribe()
         );
