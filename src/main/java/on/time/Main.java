@@ -26,7 +26,9 @@ public class Main extends AbstractVerticle {
         router.route().handler(BodyHandler.create());
 
         router.route().method(HttpMethod.GET).path("/").handler(ctx -> {
-            ctx.response().end("Bienvenido a nuestro proyecto!");
+            ctx.response().end("Bienvenido a nuestro proyecto!\n" +
+                    "Este servidor no tiene un frontend actualmente :c\n" +
+                    "Pero aun asi puedes hittearlo con curl o la mas cool httpie!");
         });
 
         RutaCliente routerUsuarios = new RutaCliente(vertx, clientStore);
