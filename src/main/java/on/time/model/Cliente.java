@@ -1,5 +1,6 @@
 package on.time.model;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import io.vertx.core.json.JsonObject;
 
 import java.util.Optional;
@@ -34,6 +35,9 @@ public class Cliente {
                 || apellido == null || correo == null || telefono == null) {
             return Optional.empty();
         }
+
+        // Magic numbers taken from Api Security in Action
+        contrasena = SCryptUtil.scrypt(contrasena, 32768, 8, 1);
 
         return Optional.of(new Cliente(nombreUsuario, contrasena, nombre,
                 apellido, correo, telefono));
