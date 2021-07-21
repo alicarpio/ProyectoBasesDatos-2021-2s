@@ -1,0 +1,3 @@
+- [ ] tipos de claves foraneas en tarea estan mal, deberia ser varchar
+- [ ] insert tareas
+- [ ] http basic auth ruta tareas

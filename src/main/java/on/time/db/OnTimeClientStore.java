@@ -1,6 +1,7 @@
 package on.time.db;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 import on.time.model.Cliente;
 
@@ -13,20 +14,24 @@ public class OnTimeClientStore implements OnTimeStore<Cliente> {
 
     @Override
     public Flowable<Cliente> getAll() {
-        return db.getConnection().select("SELECT * FROM cliente")
-                .getAs(String.class, String.class, String.class,
-                        String.class, String.class, String.class)
-                .map(tuple -> new Cliente(tuple._1(), null, tuple._3(),
-                        tuple._4(), tuple._5(), tuple._6()));
+        return db.getConnection().select("SELECT * FROM cliente").get(Cliente::fromResultSet);
+    }
+
+    @Override
+    public Single<Cliente> getOne(String id) {
+        return db.getConnection().select("SELECT * FROM cliente WHERE nombre_usuario = ? LIMIT 1")
+                .parameter(id)
+                .get(Cliente::fromResultSet)
+                .firstOrError();
     }
 
     @Override
     public Flowable<Integer> insertOne(Cliente cliente) {
+        String query = "INSERT INTO cliente (nombre_usuario, contrasena, nombre, apellido, correo, telefono) " +
+                       "VALUES (?, ?, ?, ?, ?, ?)";
         return db.getConnection()
-                .update("INSERT INTO cliente (nombre_usuario, contrasena, nombre, apellido, correo, telefono) " +
-                        "VALUES (?, ?, ?, ?, ?, ?)")
-                .parameters(cliente.getNombreUsuario(), cliente.getContrasena(), cliente.getNombre(),
-                        cliente.getApellido(), cliente.getCorreo(), cliente.getTelefono())
+                .update(query)
+                .parameters(cliente.asParameters())
                 .counts();
     }
 }

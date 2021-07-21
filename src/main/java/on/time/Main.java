@@ -12,6 +12,7 @@ import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import on.time.db.*;
 import on.time.model.*;
 import on.time.routes.RutaCliente;
+import on.time.routes.RutaTarea;
 
 public class Main extends AbstractVerticle {
     public static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -20,6 +21,7 @@ public class Main extends AbstractVerticle {
     public Completable rxStart() {
         OnTimeDB db = OnTimeDB.getInstance();
         OnTimeStore<Cliente> clientStore = new OnTimeClientStore(db);
+        OnTimeStore<Tarea> tareaStore = new OnTimeTareaStore(db);
 
         Router router = Router.router(vertx);
 
@@ -31,8 +33,11 @@ public class Main extends AbstractVerticle {
                     "Pero aun asi puedes hittearlo con curl o la mas cool httpie!");
         });
 
-        RutaCliente routerUsuarios = new RutaCliente(vertx, clientStore);
-        router.mountSubRouter("/api/v1/usuarios", routerUsuarios.getRouter());
+        RutaCliente rutaUsuarios = new RutaCliente(vertx, clientStore);
+        router.mountSubRouter("/api/v1/usuarios", rutaUsuarios.getRouter());
+
+        RutaTarea rutaTareas = new RutaTarea(vertx, tareaStore);
+        router.mountSubRouter("/api/v1/tareas", rutaTareas.getRouter());
 
         return vertx.createHttpServer()
                 .requestHandler(router)

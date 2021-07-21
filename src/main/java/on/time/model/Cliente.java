@@ -3,6 +3,9 @@ package on.time.model;
 import com.lambdaworks.crypto.SCryptUtil;
 import io.vertx.core.json.JsonObject;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class Cliente {
@@ -41,6 +44,16 @@ public class Cliente {
 
         return Optional.of(new Cliente(nombreUsuario, contrasena, nombre,
                 apellido, correo, telefono));
+    }
+
+    public static Cliente fromResultSet(ResultSet rs) throws SQLException {
+        return new Cliente(rs.getString("nombre_usuario"), rs.getString("contrasena"),
+                rs.getString("nombre"), rs.getString("apellido"), rs.getString("correo"),
+                rs.getString("telefono"));
+    }
+
+    public List<?> asParameters() {
+        return List.of(nombreUsuario, contrasena, nombre, apellido, correo, telefono);
     }
 
     public String getNombreUsuario() {
