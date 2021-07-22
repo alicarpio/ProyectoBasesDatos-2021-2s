@@ -1,4 +1,4 @@
 - [ ] tipos de claves foraneas en tarea estan mal, deberia ser varchar
 - [ ] insert tareas
 - [ ] http basic auth ruta tareas
-- [ ] aumentar longitud del campo contrasena (las contrasena encriptadas son largas)
+- [x] aumentar longitud del campo contrasena (las contrasena encriptadas son largas)

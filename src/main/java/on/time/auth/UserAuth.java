@@ -37,7 +37,7 @@ public class UserAuth {
                 ctx.request().headers().add("subject", auth.substring("Basic ".length()));
                 ctx.next();
             } else {
-                ctx.response().setStatusCode(404).end(new JsonObject().put("error", "User does not exist").encode());
+                ctx.response().setStatusCode(422).end(new JsonObject().put("error", "Invalid credentials").encode());
             }
         }
     }

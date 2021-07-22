@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS sonido (
 CREATE TABLE IF NOT EXISTS cliente (
 	PRIMARY KEY (nombre_usuario),
 	nombre_usuario VARCHAR(60)  NOT NULL,
-	contrasena     VARCHAR(55)  NOT NULL,
+	contrasena     VARCHAR(255)  NOT NULL,
 	nombre         VARCHAR(60)  NOT NULL,
 	apellido       VARCHAR(60)  NOT NULL,
 	correo         VARCHAR(100) NOT NULL,
