@@ -9,6 +9,7 @@ import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.Router;
 
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
+import on.time.auth.UserAuth;
 import on.time.db.*;
 import on.time.model.*;
 import on.time.routes.RutaCliente;
@@ -23,6 +24,8 @@ public class Main extends AbstractVerticle {
         OnTimeStore<Cliente> clientStore = new OnTimeClientStore(db);
         OnTimeStore<Tarea> tareaStore = new OnTimeTareaStore(db);
 
+        UserAuth userAuth = new UserAuth(clientStore);
+
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
@@ -35,6 +38,9 @@ public class Main extends AbstractVerticle {
 
         RutaCliente rutaUsuarios = new RutaCliente(vertx, clientStore);
         router.mountSubRouter("/api/v1/usuarios", rutaUsuarios.getRouter());
+
+        // Set up basic auth for certain routes
+        router.route("/api/v1/tareas/*").handler(userAuth::parseBasicHttpAuth);
 
         RutaTarea rutaTareas = new RutaTarea(vertx, tareaStore);
         router.mountSubRouter("/api/v1/tareas", rutaTareas.getRouter());

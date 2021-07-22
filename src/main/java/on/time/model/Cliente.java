@@ -6,6 +6,7 @@ import io.vertx.core.json.JsonObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Cliente {
@@ -27,6 +28,10 @@ public class Cliente {
     }
 
     public static Optional<Cliente> fromJson(JsonObject body) {
+        if (body == null) {
+            return Optional.empty();
+        }
+
         var nombreUsuario = body.getString("usuario");
         var contrasena = body.getString("contrasena");
         var nombre = body.getString("nombre");

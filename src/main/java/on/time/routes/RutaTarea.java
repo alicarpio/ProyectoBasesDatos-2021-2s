@@ -29,13 +29,13 @@ public class RutaTarea {
     }
 
     public void getAll(RoutingContext ctx) {
-        store.getAll().toList().subscribe(tareas -> {
+        store.getAll(ctx).toList().subscribe(tareas -> {
             ctx.json(new JsonObject().put("tareas", tareas));
         });
     }
 
     public void getOne(RoutingContext ctx) {
-        store.getOne(ctx.pathParam("id"))
+        store.getOne(ctx, ctx.pathParam("id"))
                 .subscribe(tarea -> {
                     logger.info("Tarea " + tarea + " sent succesfully");
                     ctx.json(JsonObject.mapFrom(tarea));
