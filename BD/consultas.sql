@@ -18,5 +18,3 @@ SELECT *
 
 SELECT *
   FROM recomendacion_cliente;
-
-
