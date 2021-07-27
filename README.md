@@ -52,7 +52,7 @@ curl -X POST \
     "correo": "daddynar@gmail.com",
     "telefono": "0995489331"
   }' \
-  https://proyecto-sistemas-bases.herokuapp.com/api/v1/usuarios/crear
+  https://proyecto-sistemas-bases.herokuapp.com/api/v1/usuarios/registrar
 ```
 
 ## Evidencia
@@ -61,4 +61,4 @@ curl -X POST \
 - [Modelo Lógico](./evidencias/modelo_logico)
 - [Diccionario Datos](./evidencias/diccionario_datos)
 - [Consultas Álgebra Relacional](./evidencias/consultas_algebra)
-- [SQL](./evidencias/sql/evidencia_sql_01.png)
+- [SQL](./evidencias/sql)
