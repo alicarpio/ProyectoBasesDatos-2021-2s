@@ -59,9 +59,7 @@ CREATE TABLE IF NOT EXISTS tarea (
 		ON DELETE CASCADE ON UPDATE CASCADE,
 	descripcion  VARCHAR(255) NOT NULL,
 	fecha_inicio DATE         NOT NULL,
-	hora_inicio  TIME         NOT NULL,
 	fecha_fin    DATE         NOT NULL,
-	hora_fin     TIME         NOT NULL,
 	categoria    VARCHAR(50)  NOT NULL
 );
 
@@ -80,7 +78,6 @@ CREATE TABLE IF NOT EXISTS recordatorios (
 	FOREIGN KEY (id_sonido)
 		REFERENCES sonido (id_sonido) 
 		ON DELETE CASCADE ON UPDATE CASCADE,
-	nombre VARCHAR(60) NOT NULL,
 	fecha_inicio DATE  NOT NULL,
 	hora_inicio  TIME  NOT NULL,
 	fecha_fin    DATE  NOT NULL,
