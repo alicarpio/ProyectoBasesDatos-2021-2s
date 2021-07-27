@@ -65,24 +65,24 @@ SELECT *
 
 SELECT *
   FROM recordatorios AS r
- WHERE r.hora_inicio BETWEEN '9/1/2021' AND '11/1/2021';
+ WHERE r.fecha_inicio BETWEEN '9/1/2021' AND '11/1/2021';
 
 SELECT *
   FROM recomendacion_cliente AS r
  WHERE r.id_cliente IN ('ruthcv', 'lilicollins15', 'oscarmoises', 'tinistossel');
 
 // 4.
-SELECT nombre_usario
+SELECT c.nombre_usuario
   FROM cliente AS c
        INNER JOIN tarea AS t
        ON c.nombre_usuario = t.id_cliente
- WHERE c.categoria LIKE '%deber%';
+ WHERE t.categoria LIKE '%deber%';
 
 SELECT *
   FROM tarea
  WHERE id_admin IS NOT NULL;
 
-SELECT nombre, descripcion
+SELECT *
   FROM recordatorios AS rec
        INNER  JOIN sonido AS son
        ON son.id_sonido = rec.id_sonido;
