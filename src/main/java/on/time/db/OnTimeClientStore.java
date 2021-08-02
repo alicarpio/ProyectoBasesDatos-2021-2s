@@ -15,12 +15,15 @@ public class OnTimeClientStore implements OnTimeStore<Cliente> {
 
     @Override
     public Flowable<Cliente> getAll(RoutingContext ctx) {
-        return db.getConnection().select("SELECT * FROM cliente").get(Cliente::fromResultSet);
+        return db.getConnection()
+                .select("SELECT * FROM cliente")
+                .get(Cliente::fromResultSet);
     }
 
     @Override
     public Single<Cliente> getOne(RoutingContext ctx, String id) {
-        return db.getConnection().select("SELECT * FROM cliente WHERE nombre_usuario = ? LIMIT 1")
+        return db.getConnection()
+                .select("SELECT * FROM cliente WHERE nombre_usuario = ? LIMIT 1")
                 .parameter(id)
                 .get(Cliente::fromResultSet)
                 .firstOrError();
@@ -28,10 +31,9 @@ public class OnTimeClientStore implements OnTimeStore<Cliente> {
 
     @Override
     public Flowable<Integer> insertOne(RoutingContext ctx, Cliente cliente) {
-        String query = "INSERT INTO cliente (nombre_usuario, contrasena, nombre, apellido, correo, telefono) " +
-                       "VALUES (?, ?, ?, ?, ?, ?)";
         return db.getConnection()
-                .update(query)
+                .update("INSERT INTO cliente (nombre_usuario, contrasena, nombre, apellido, correo, telefono) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)")
                 .parameters(cliente.asParameters())
                 .counts();
     }

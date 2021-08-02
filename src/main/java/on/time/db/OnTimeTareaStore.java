@@ -2,8 +2,8 @@ package on.time.db;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-
 import io.vertx.reactivex.ext.web.RoutingContext;
+
 import on.time.model.Tarea;
 
 public class OnTimeTareaStore implements OnTimeStore<Tarea> {
@@ -15,10 +15,8 @@ public class OnTimeTareaStore implements OnTimeStore<Tarea> {
 
     @Override
     public Flowable<Tarea> getAll(RoutingContext ctx) {
-        return db.getConnection().select(
-                "SELECT * " +
-                  "FROM tarea AS t " +
-                 "WHERE t.id_cliente = ?")
+        return db.getConnection()
+                .select("SELECT * FROM tarea WHERE id_cliente = ?")
                 .parameter(ctx.request().getHeader("subject"))
                 .get(Tarea::fromResultSet);
     }
@@ -26,10 +24,10 @@ public class OnTimeTareaStore implements OnTimeStore<Tarea> {
     @Override
     public Single<Tarea> getOne(RoutingContext ctx, String id) {
         return db.getConnection().select("SELECT *" +
-                                           "FROM tarea AS t" +
-                                          "WHERE t.id_tarea = ? " +
-                                            "AND t.id_cliente = ? " +
-                                          "LIMIT 1")
+                        "FROM tarea AS t" +
+                        "WHERE t.id_tarea = ? " +
+                        "AND t.id_cliente = ? " +
+                        "LIMIT 1")
                 .parameters(Integer.parseInt(id), ctx.request().getHeader("subject"))
                 .get(Tarea::fromResultSet)
                 .firstOrError();
@@ -38,9 +36,9 @@ public class OnTimeTareaStore implements OnTimeStore<Tarea> {
     // TODO
     @Override
     public Flowable<Integer> insertOne(RoutingContext ctx, Tarea tarea) {
-        String query = "INSERT INTO tarea (id_tarea, id_cliente, id_admin, descripcion, fecha_inicio, fecha_fin, categoria)" +
-                       "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        return db.getConnection().update(query)
+        return db.getConnection()
+                .update("INSERT INTO tarea (id_tarea, id_cliente, id_admin, descripcion, fecha_inicio, fecha_fin, categoria)" +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)")
                 .parameters(tarea.asParameters())
                 .counts();
     }
