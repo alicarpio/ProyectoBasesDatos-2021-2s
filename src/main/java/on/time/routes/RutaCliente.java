@@ -6,16 +6,17 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.RoutingContext;
-
-import on.time.db.OnTimeStore;
+import on.time.db.OnTimeClientStore;
 import on.time.model.Cliente;
+
+import java.util.NoSuchElementException;
 
 public class RutaCliente {
     private Router router;
-    private OnTimeStore<Cliente> store;
+    private OnTimeClientStore store;
     private static Logger logger = LoggerFactory.getLogger(RutaCliente.class);
 
-    public RutaCliente(Vertx vertx, OnTimeStore<Cliente> store) {
+    public RutaCliente(Vertx vertx, OnTimeClientStore store) {
         router = Router.router(vertx);
         this.store = store;
 
@@ -29,13 +30,13 @@ public class RutaCliente {
     }
 
     public void getAll(RoutingContext ctx) {
-        store.getAll(ctx).toList().subscribe(
+        store.getAll().toList().subscribe(
                 clientes -> ctx.json(new JsonObject().put("clientes", clientes)),
                 err -> logger.error("{}", err));
     }
 
     public void getOne(RoutingContext ctx) {
-        store.getOne(ctx, ctx.pathParam("id")).subscribe(
+        store.getOne(ctx.pathParam("id")).subscribe(
                 cliente -> ctx.json(new JsonObject().put("cliente", cliente)),
                 err -> {
                     logger.error("Error while fetching single user: ", err);
@@ -44,16 +45,20 @@ public class RutaCliente {
     }
 
     public void insertOne(RoutingContext ctx) {
-        Cliente.fromJson(ctx.getBodyAsJson()).ifPresentOrElse(cliente -> {
-            store.insertOne(ctx, cliente).subscribe(
-                    i -> ctx.response().setStatusCode(201).end(new JsonObject().put("updated", i).encode()),
-                    err -> {
-                        logger.error("Error while inserting new user: ", err);
-                        ctx.response().setStatusCode(409).end(new JsonObject().put("error", "Username already taken").encode());
-                    });
-        }, () -> {
+        Cliente cliente = Cliente.fromJson(ctx.getBodyAsJson()).orElse(null);
+
+        if (cliente == null) {
             logger.error("Error while converting from json to user: ");
             ctx.response().setStatusCode(400).end(new JsonObject().put("error", "Missing fields").encode());
-        });
+        }
+
+        try {
+            int updated = store.insertOne(cliente).blockingFirst();
+            ctx.response().setStatusCode(201).end(new JsonObject().put("updated", updated).encode());
+        } catch (NoSuchElementException e) {
+            logger.error("Error while inserting new user: ", e);
+            ctx.response().setStatusCode(409)
+                    .end(new JsonObject().put("error", "Username already taken").encode());
+        }
     }
 }

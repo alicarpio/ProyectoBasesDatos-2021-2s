@@ -3,20 +3,20 @@ package on.time.auth;
 import com.lambdaworks.crypto.SCryptUtil;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.ext.web.RoutingContext;
-import on.time.db.OnTimeStore;
+import on.time.db.OnTimeClientStore;
 import on.time.model.Cliente;
 
 import java.util.Base64;
 
 public class UserAuth {
-    private OnTimeStore<Cliente> db;
+    private OnTimeClientStore db;
 
-    public UserAuth(OnTimeStore<Cliente> db) {
+    public UserAuth(OnTimeClientStore db) {
         this.db = db;
     }
 
     public boolean validateUser(RoutingContext ctx, String username, String password) {
-        Cliente user = db.getOne(ctx, username).blockingGet();
+        Cliente user = db.getOne(username).blockingGet();
         return SCryptUtil.check(password, user.getContrasena());
     }
 

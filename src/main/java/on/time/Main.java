@@ -7,11 +7,11 @@ import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.reactivex.core.AbstractVerticle;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.Router;
-
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import on.time.auth.UserAuth;
-import on.time.db.*;
-import on.time.model.*;
+import on.time.db.OnTimeClientStore;
+import on.time.db.OnTimeDB;
+import on.time.db.OnTimeTareaStore;
 import on.time.routes.RutaCliente;
 import on.time.routes.RutaTarea;
 
@@ -21,8 +21,8 @@ public class Main extends AbstractVerticle {
     @Override
     public Completable rxStart() {
         OnTimeDB db = OnTimeDB.getInstance();
-        OnTimeStore<Cliente> clientStore = new OnTimeClientStore(db);
-        OnTimeStore<Tarea> tareaStore = new OnTimeTareaStore(db);
+        OnTimeClientStore clientStore = new OnTimeClientStore(db);
+        OnTimeTareaStore tareaStore = new OnTimeTareaStore(db);
 
         UserAuth userAuth = new UserAuth(clientStore);
 
