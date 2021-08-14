@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS administrador (
 	constrasena    VARCHAR(50) NOT NULL
 );
 
+
 CREATE TABLE IF NOT EXISTS recomendacion (
 	PRIMARY KEY (id_recomendacion),
 	id_recomendacion SERIAL      NOT NULL,
