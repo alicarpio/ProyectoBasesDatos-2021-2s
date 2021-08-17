@@ -1,5 +1,0 @@
-- [x] tipos de claves foraneas en tarea estan mal, deberia ser varchar
-- [ ] actualizar queries -- campos eliminados
-- [ ] insert tareas
-- [x] http basic auth ruta tareas
-- [x] aumentar longitud del campo contrasena (las contrasena encriptadas son largas)

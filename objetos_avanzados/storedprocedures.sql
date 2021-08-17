@@ -290,7 +290,6 @@ end;
 $$
 language plpgsql;
 
-
 create or replace procedure delete_recordatorio(
     id_rec int
 )
@@ -303,3 +302,75 @@ end;
 $$
 language plpgsql;
 
+/* consultar tarea */
+create or replace procedure consultar_tarea(
+    id_tarea int
+)
+AS
+$$
+begin
+    select *
+      from tarea as t
+     where t.id_tarea = id_tarea;
+end;
+$$
+language plpgsql;
+
+/* ver calendario : tareas del mes actual */
+create or replace procedure ver_calendario()
+as
+$$
+declare
+    month int := extract(Month from now());
+begin
+    select *
+      from tarea as t
+     where month = extract(Month from t.fecha_inicio);
+end;
+$$
+language plpgsql;
+
+/* consultar recordatorio recibe el id tarea */
+CREATE OR REPLACE PROCEDURE consultar_recordatorio(
+     id_tarea INT
+)
+AS
+$$
+BEGIN
+    SELECT *
+      FROM recordatorios AS rec
+     WHERE rec.id_tarea = id_tarea;
+END;
+$$
+language plpgsql;
+
+
+/* consultar recomendaciones recibe la categoria */
+CREATE OR REPLACE PROCEDURE consultar_recomendaciones(
+    categ VARCHAR (50)
+)
+AS
+$$
+BEGIN
+    SELECT *
+      FROM recomendacion AS r
+     WHERE r.categoria = categ;
+END;
+$$
+language plpgsql;
+
+-- Mostrar un reporte de todas las tareas del cliente Vanessa que tienen un recordatorio.
+
+-- Mostrar un reporte de todas las tareas que no poseen un recordatorio.
+
+-- Mostrar un reporte de todas las tareas que ha ingresado el administrador Alexander.
+
+-- Mostrar un reporte con todos los recordatorios que tienen un sonido asociado.
+
+-- Mostrar un reporte de todas las recomendaciones (nombre, descripcion, categoria) dadas por el administrador Alina.
+
+-- ¿Cuántas tareas tiene el cliente Oscar?
+
+-- ¿Cuántas tareas tiene el cliente Rasputín en la categoría “ocio”?
+
+-- ¿Cuál es el nombre del cliente con más tareas?
