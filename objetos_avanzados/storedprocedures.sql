@@ -1,45 +1,45 @@
 -- Tabla sonido
-create or replace procedure insert_sonido(
+create or replace procedure ingresar_sonido(
     descripcion varchar(255),
-    sonido bytea
+    son bytea
 )
 AS
 $$
 begin
     insert into sonido (descripcion, sonido)
-    values (descripcion, sonido);
+    values (descripcion, son);
 end;
 $$
 language plpgsql;
 
-create or replace procedure update_descripcion_sonido(
+create or replace procedure actualizar_sonido(
     id int,
-    desc varchar(255)
+    descripcion varchar(255)
 )
 AS
 $$
 begin
-    update sonido
-       set descripcion = desc
-     where id_sonido = id;
+    update sonido as s
+       set descripcion = descripcion
+     where s.id_sonido = id;
 end;
 $$
 language plpgsql;
 
-create or replace procedure delete_sonido(
+create or replace procedure eliminar_sonido(
     id int
 )
 AS
 $$
 begin
-    delete from delete
+    delete from sonido
      where id_sonido = id;
 end;
 $$
 language plpgsql;
 
 -- Tabla cliente
-CREATE OR REPLACE PROCEDURE insert_cliente(
+CREATE OR REPLACE PROCEDURE insertar_cliente(
     nom_usuario VARCHAR(60),
     password    VARCHAR(255),
     nombre      VARCHAR(60),
@@ -50,13 +50,13 @@ CREATE OR REPLACE PROCEDURE insert_cliente(
 AS
 $$
 BEGIN
-    INSERT INTO cliente (nombre_usuario, contraseña, nombre, apellido, correo, telefono)
+    INSERT INTO cliente (nombre_usuario, contrasena, nombre, apellido, correo, telefono)
     VALUES (nom_usuario, password, nombre, apellido, correo, telef);
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE PROCEDURE update_cliente_por_nombreUsuario(
+CREATE OR REPLACE PROCEDURE actualizar_cliente(
     nom_usuario VARCHAR(60),
     mail         VARCHAR(100)
 )
@@ -66,23 +66,25 @@ BEGIN
     UPDATE cliente
        SET correo = mail
     WHERE nombre_usuario = nom_usuario;
+exception when others then
+    raise notice 'Ocurrio un error al intentar actualizar el cliente';
 END;
 $$
 LANGUAGE plpgsql;
 
-
-CREATE OR REPLACE PROCEDURE delete_cliente_por_nombreUsuario(
+CREATE OR REPLACE PROCEDURE eliminar_cliente(
     nom_usuario VARCHAR(60)
 )
 AS
 $$
 BEGIN
     DELETE FROM cliente
-    WHERE nombre_usuario = nom_usuario;
+     WHERE nombre_usuario = nom_usuario;
+exception when others then
+    raise notice 'Ocurrio un error al intentar eliminar el cliente';
 END;
 $$
 LANGUAGE plpgsql;
-
 
 -- Tabla administrador
 create or replace procedure insertar_administrador(
@@ -92,13 +94,15 @@ create or replace procedure insertar_administrador(
 AS
 $$
 begin
-    insert into administrador (nombre_usuario, contrasena)
+    insert into administrador (nombre_usuario, constrasena)
     values (usuario, contrasena);
+exception when others then
+    raise notice 'Ocurrio un error al intentar insertar el administrador';
 end;
 $$
 language plpgsql;
 
-create or replace procedure update_contrasena_administrador(
+create or replace procedure actualizar_administrador(
     usuario varchar (50),
     contra varchar (50)
 )
@@ -106,13 +110,15 @@ AS
 $$
 begin
     update administrador
-       set contrasena = contra
+       set constrasena = contra
      where nombre_usuario = usuario;
+exception when others then
+    raise notice 'Ocurrio un error al intentar actualizar el administrador';
 end;
 $$
 language plpgsql;
 
-create or replace procedure delete_administrador(
+create or replace procedure eliminar_administrador(
     usuario varchar (50)
 )
 AS
@@ -128,19 +134,22 @@ language plpgsql;
 create or replace procedure insert_recomendacion(
     id_adm varchar (50),
     nombre varchar (50),
-    desc varchar (50),
+    descripcion varchar (50),
     cat varchar (50)
 )
 AS
 $$
 begin
     insert into recomendacion (id_admin, nombre, descripcion, categoria)
-    values (id_adm, nombre, desc, cat);
+    values (id_adm, nombre, descripcion, cat);
+exception when others then
+    raise notice 'Ocurrio un error al intentar insertar recomendacion';
+
 end;
 $$
 language plpgsql;
 
-create or replace procedure update_categoria_recomendacion(
+create or replace procedure actualizar_recomendacion(
     id int,
     cat varchar (50)
 )
@@ -154,7 +163,7 @@ end;
 $$
 language plpgsql;
 
-create or replace procedure delete_recomendacion(
+create or replace procedure eliminar_recomendacion(
     id int
 )
 AS
@@ -167,8 +176,7 @@ $$
 language plpgsql;
 
 -- Tabla recomendacion_cliente
-
-CREATE OR REPLACE PROCEDURE insert_recomendacion_cliente(
+CREATE OR REPLACE PROCEDURE ingresar_recomendacion_cliente(
     id_client VARCHAR(60),
     id_recomen VARCHAR(255),
     fech DATE
@@ -182,8 +190,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
-CREATE OR REPLACE PROCEDURE update_recomendacioncliente(
+CREATE OR REPLACE PROCEDURE actualizar_recomendacion_cliente(
     nom_usuario VARCHAR(60),
     id_reco INT,
     fech DATE
@@ -193,27 +200,26 @@ $$
 BEGIN
     UPDATE recomendacion_cliente
     SET fecha = fech
-    WHERE id_cliente = nom_usuario AND id_reomendacion = id_reco;
+    WHERE id_cliente = nom_usuario AND id_recomendacion = id_reco;
 END;
 $$
-    LANGUAGE plpgsql;
+LANGUAGE plpgsql;
 
-
-CREATE OR REPLACE PROCEDURE delete_recomendacionCliente(
+CREATE OR REPLACE PROCEDURE eliminar_recomendacion_cliente(
     nom_usuario VARCHAR(60),
     id_reco INT
 )
 AS
 $$
 BEGIN
-    DELETE FROM cliente
-    WHERE nombre_usuario = nom_usuario AND id_recomendacion = id_reco;
+    DELETE FROM recomendacion_cliente
+    WHERE id_cliente = nom_usuario AND id_recomendacion = id_reco;
 END;
 $$
 LANGUAGE plpgsql;
 
 -- Tabla tarea
-create or replace procedure insertar_tarea(
+create or replace procedure ingresar_tarea(
     id_clie varchar (60),
     id_adm varchar (50),
     descripcion varchar (255),
@@ -230,7 +236,7 @@ end;
 $$
 language plpgsql;
 
-create or replace procedure update_descripcion_tarea(
+create or replace procedure actualizar_tarea(
     id int,
     descrip varchar (255)
 )
@@ -244,7 +250,7 @@ end;
 $$
 language plpgsql;
 
-create or replace procedure delete_tarea(
+create or replace procedure eliminar_tarea(
     id int
 )
 AS
@@ -257,7 +263,7 @@ $$
 language plpgsql;
 
 -- Tabla recordatorios
-create or replace procedure insertar_recordatorio(
+create or replace procedure ingresar_recordatorio(
     id_recordatorio serial,
     id_tarea int,
     id_cliente varchar (60),
@@ -276,7 +282,7 @@ end;
 $$
 language plpgsql;
 
-create or replace procedure update_fecha_inicio_recordatorio(
+create or replace procedure actualizar_recordatorio(
     id_rec int,
     fecha_inc date
 )
@@ -290,7 +296,7 @@ end;
 $$
 language plpgsql;
 
-create or replace procedure delete_recordatorio(
+create or replace procedure eliminar_recordatorio(
     id_rec int
 )
 AS
@@ -304,14 +310,14 @@ language plpgsql;
 
 /* consultar tarea */
 create or replace procedure consultar_tarea(
-    id_tarea int
+    idtarea int
 )
 AS
 $$
 begin
     select *
       from tarea as t
-     where t.id_tarea = id_tarea;
+     where t.id_tarea = idtarea;
 end;
 $$
 language plpgsql;
@@ -332,18 +338,17 @@ language plpgsql;
 
 /* consultar recordatorio recibe el id tarea */
 CREATE OR REPLACE PROCEDURE consultar_recordatorio(
-     id_tarea INT
+     idtarea INT
 )
 AS
 $$
 BEGIN
     SELECT *
       FROM recordatorios AS rec
-     WHERE rec.id_tarea = id_tarea;
+     WHERE rec.id_tarea = idtarea;
 END;
 $$
 language plpgsql;
-
 
 /* consultar recomendaciones recibe la categoria */
 CREATE OR REPLACE PROCEDURE consultar_recomendaciones(
@@ -359,18 +364,94 @@ END;
 $$
 language plpgsql;
 
--- Mostrar un reporte de todas las tareas del cliente Vanessa que tienen un recordatorio.
+/* Consultas */
+
+-- Mostrar un reporte de todas las tareas del cliente 'Shawn' que tienen un recordatorio.
+CREATE OR REPLACE PROCEDURE tareas_Shawn_recordatorio(
+)
+AS
+$$
+BEGIN
+    SELECT *
+      FROM tareas_Shawn_recordatorio;
+END;
+$$
+language plpgsql;
+
 
 -- Mostrar un reporte de todas las tareas que no poseen un recordatorio.
+create or replace procedure recomendaciones_administrador_alina()
+as
+$$
+begin
+    select *
+      from recomendaciones_administrador_alina;
+end;
+$$
+language plpgsql;
 
--- Mostrar un reporte de todas las tareas que ha ingresado el administrador Alexander.
+-- Mostrar un reporte de todas las tareas que han sido ingresados por un administrador.
+create or replace procedure tareas_insert_administrador()
+as
+$$
+begin
+    select *
+      from tareas_insert_administrador;
+end;
+$$
+language plpgsql;
 
 -- Mostrar un reporte con todos los recordatorios que tienen un sonido asociado.
+create or replace procedure recordatorios_con_sonido()
+as
+$$
+begin
+    select *
+      from recordatorios_con_sonido;
+end;
+$$
+language plpgsql;
 
 -- Mostrar un reporte de todas las recomendaciones (nombre, descripcion, categoria) dadas por el administrador Alina.
+create or replace procedure recomendaciones_administrador_alina ()
+as
+$$
+begin
+    select *
+      from recomendaciones_administrador_alina;
+end;
+$$
+language plpgsql;
 
 -- ¿Cuántas tareas tiene el cliente Oscar?
+create or replace procedure tareas_oscar()
+as
+$$
+begin
+    select *
+      from tareas_oscar;
+end;
+$$
+language plpgsql;
 
 -- ¿Cuántas tareas tiene el cliente Rasputín en la categoría “ocio”?
+create or replace procedure tareas_lili_ocio()
+as
+$$
+begin
+    select *
+      from tareas_lili_ocio;
+end;
+$$
+language plpgsql;
 
 -- ¿Cuál es el nombre del cliente con más tareas?
+create or replace procedure cliente_mas_tareas()
+as
+$$
+begin
+    select *
+      from cliente_mas_tareas;
+end;
+$$
+language plpgsql;

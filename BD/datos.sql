@@ -1,3 +1,4 @@
+
 INSERT INTO cliente (nombre_usuario, contrasena, nombre, apellido, correo, telefono)
  VALUES ('agcarpio', '_YmSY07Gb6', 'Alina', 'Carpio', 'alicarpio@hotmail.com', '0960774778'),
        ('alegoussas', '4m7pF8FpG!', 'Alexander', 'Goussas', 'alegoussas@gmail.com', '0986016201'),
@@ -119,7 +120,7 @@ VALUES (1, 'agcarpio', 'diOnsToR', 'Realizar tarea de trigonometria', '8/20/2021
        (4, 'victorec', 'admin2', 'Programar un compilador en 30 segundos', '1/9/2021', '4/9/2021', 'poo'),
        (5, 'kevinramos', 'admin3', 'Video de manualidades pendiente', '8/30/2021', '8/31/2021', 'videos'),
        (6, 'shawnmendes', 'admin4', 'Proximo estreno de Treat you better', '10/11/2021', '11/13/2021', 'musica'),
-       (7, 'lilicollins15', 'admin5', 'Subir video 10 tips para crecer', '6/12/2021', '9/12/2021', 'youtube'),
+       (7, 'lilicollins15', 'admin5', 'Subir video 10 tips para crecer', '6/12/2021', '9/12/2021', 'ocio'),
        (8, 'fer1plaza', 'admin7', 'Deber de present perfect continous', '11/8/2021', '12/8/2021', 'ingles'),
        (9, 'diegochiang', 'admin8', 'Proxima receta "Fritada"', '8/17/2021', '8/19/2021', 'gastronomia'),
        (10, 'genesistorres3', 'admin9', 'Lavar los platos', '8/23/2021', '8/25/2021', 'hogar'),
