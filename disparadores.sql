@@ -1,5 +1,7 @@
-
-
+/*
+    Este disparador ingresa una nueva recomendacion cuando se ingresa
+    una tarea con categoria 'proyectos', 'avances' o 'proposito'.
+*/
 create or replace function actualizar_recomendacion()
 returns trigger
 AS
@@ -14,20 +16,24 @@ begin
 
     raise notice 'Categoria recomendable ingresada!';
 
-    select categoria
+    -- Use perform instead of select for side effects, see:
+    -- https://www.postgresql.org/docs/current/plpgsql-statements.html#PLPGSQL-STATEMENTS-DIAGNOSTICS
+    perform categoria
       from recomendacion as r
-     where r.categoria = categoria;
+     where r.categoria = NEW.categoria;
 
-    nombre_recomendacion := 'Recomendacion (' || categoria || ')';
-    desc_recomendacion := (case categoria
-                           when 'proyectos' then ''
-                           when 'avances' then ''
-                           when 'propostio' then ''
+    nombre_recomendacion := 'Recomendacion (' || NEW.categoria || ')';
+    desc_recomendacion := (case NEW.categoria
+                           when 'proyectos' then 'Asegurate de comenzar con tiempo!'
+                           when 'avances' then 'Las guerras se ganan una batalla a la vez'
+                           when 'proposito' then 'La responsabilidad mueve al hombre'
                            end);
 
     if not found then
         insert into recomendacion (id_admin, nombre, descripcion, categoria)
-        values (1, nombre_recomendacion, desc_recomendacion, categoria);
+        values ('alina', nombre_recomendacion, desc_recomendacion, NEW.categoria);
+
+        raise notice 'Recomendacion nueva ingresada: %', nombre_recomendacion;
     end if;
 
     return NEW;
@@ -35,47 +41,62 @@ end;
 $$
 language plpgsql;
 
+drop trigger if exists actualizar_recomendacion on tarea;
 create trigger actualizar_recomendacion
     before insert on tarea
     for each row execute function actualizar_recomendacion();
 
+/*
+    Este disparador ingresa un nuevo recordatorio cuando el usuario
+    ingresa una tarea en la categoria 'universidad' o 'colegio'.
+*/
 create or replace function actualizar_recordatorio()
 returns trigger
 as
 $$
 declare
-    id_sonido int;
-    fecha_inicio date;
-    hora_inicio time;
-    fecha_fin date;
-    hora_fin time;
+    idson int;
+    finicio date;
+    hinicio time;
+    ffin date;
+    hfin time;
 begin
     if NEW.categoria not in ('universidad', 'colegio') then
-        return NEW;
+        return null;
     end if;
 
-    id_sonido := (select id_sonido
-                    from sonido as s
-                   where s.descripcion like '%relajante%'
-                   limit 1);
+    idson := (select s.id_sonido
+                from sonido as s
+               where s.descripcion like '%relajante%'
+               limit 1);
 
-    fecha_inicio := current_date;
-    hora_inicio := current_time;
+    if idson is null then
+        raise notice 'No hay sonidos relajantes, usando sonido default...';
+        idson := (select s.id_sonido
+                   from sonido as s
+                  limit 1);
+    end if;
+
+    finicio := current_date;
+    hinicio := current_time;
 
     -- Simulamos extraer la due date de algun servicio externo
     raise notice 'Extrayendo fecha de Aula Virtual...';
 
-    fecha_fin := fecha_inicio + integer '7';
-    hora_fin := hora_inicio + interval '3 hours';
+    ffin := finicio + integer '7';
+    hfin := hinicio + interval '3 hours';
 
-    insert into recordatorios(id_tarea, id_cliente, id_sonido, fecha_incio, hora_inicio, fecha_fin, hora_fin)
-    values (NEW.id_tarea, NEW.id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin);
+    insert into recordatorios(id_tarea, id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin)
+    values (NEW.id_tarea, NEW.id_cliente, idson, finicio, hinicio, ffin, hfin);
 
-    return NEW;
+    raise notice 'Se ha insertado un recordatorio nuevo';
+
+    return null;
 end;
 $$
 language plpgsql;
 
+drop trigger if exists actualizar_recordatorio on tarea;
 create trigger actualizar_recordatorio
-    before insert on tarea
+    after insert on tarea
     for each row execute function actualizar_recordatorio();

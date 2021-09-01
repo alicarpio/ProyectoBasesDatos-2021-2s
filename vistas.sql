@@ -1,7 +1,7 @@
 /* Mostrar un reporte con todos los clientes (nombreUsuario) que tienen
    tareas con la categoría “deber”
  */
-create view tareasCategoriaDeber as
+create or replace view tareas_categoria_deber as
     (select nombre_usuario
        from cliente as c
             inner join tarea as t
@@ -11,16 +11,16 @@ create view tareasCategoriaDeber as
 /* Mostrar un reporte de todos los clientes que tienen recordatorios
    con fecha de inicio 15 Julio 2021 y fecha de fin 15 Agosto 2021
  */
- create view recordatorioJulioAgosto as
+ create or replace view recordatorio_julio_agosto as
     (select nombre_usuario
        from cliente as c
             inner join recordatorios as r
             on c.nombre_usuario = r.id_cliente
-      where fecha_inicio = '15/7/2021'
-        and fecha_fin = '15/8/2021');
+      where fecha_inicio = '07/15/2021'
+        and fecha_fin = '08/15/2021');
 
 /* Mostrar un reporte con todos los clientes (nombreUsuario) que tienen tareas con la categoría “deber”. */
-create view cliente_categoria_deber as
+create or replace view cliente_categoria_deber as
     (SELECT c.nombre_usuario
        FROM cliente AS c
             INNER JOIN tarea AS t
@@ -28,20 +28,20 @@ create view cliente_categoria_deber as
       WHERE t.categoria LIKE '%deber%');
 
 /* Mostrar un reporte de todas las tareas que han sido ingresadas por un administrador. */
-CREATE VIEW tareas_insert_administrador AS
+create or replace VIEW tareas_insert_administrador AS
     (SELECT *
        FROM tarea
       WHERE id_admin IS NOT NULL);
 
 /* Mostrar un reporte con todos los recordatorios que tienen un sonido asociado. */
-CREATE VIEW recordatorios_con_sonido AS
-    (SELECT *
+create or replace VIEW recordatorios_con_sonido AS
+    (SELECT rec.*
        FROM recordatorios AS rec
             INNER JOIN sonido AS so
             ON so.id_sonido = rec.id_sonido);
 
 /* Mostrar un reporte de todas las tareas que no poseen un recordatorio. */
-CREATE VIEW tareas_not_recordatorios AS
+create or replace VIEW tareas_not_recordatorios AS
 (SELECT *
    FROM tarea AS t
   WHERE NOT EXISTS (SELECT 1
@@ -49,7 +49,7 @@ CREATE VIEW tareas_not_recordatorios AS
                      WHERE t.id_tarea = r.id_tarea));
 
 /* ¿Cuántas tareas tiene el cliente Oscar? */
-create view tareas_oscar as
+create or replace view tareas_oscar as
     (SELECT count (id_tarea) AS numero_tareas
        FROM tarea AS t
             INNER JOIN cliente AS cl
@@ -57,7 +57,7 @@ create view tareas_oscar as
       WHERE cl.nombre = 'Oscar');
 
 /* ¿Cuántas tareas tiene el cliente Lili en la categoría “ocio”? */
-create view tareas_lili_ocio as
+create or replace view tareas_lili_ocio as
     (SELECT count (id_tarea) AS numero_tareas
        FROM tarea AS t
             INNER JOIN cliente AS cl
@@ -65,7 +65,7 @@ create view tareas_lili_ocio as
       WHERE cl.nombre = 'Lili' AND t.categoria ='ocio');
 
 /* ¿Cuál es el nombre del cliente con más tareas? */
-create view cliente_mas_tareas as
+create or replace view cliente_mas_tareas as
     (select n.nombre_usuario, max(n.nTareas)
        from (select c.nombre_usuario, count(c.nombre_usuario) as nTareas
                from cliente as c
@@ -76,7 +76,7 @@ create view cliente_mas_tareas as
 
 /* Mostrar un reporte de todos los clientes que tienen recordatorios con fecha de
    inicio 15 Julio 2021 y fecha de fin 15 agosto 2021. */
-create view clientes_julio_agosto as
+create or replace view clientes_julio_agosto as
     (select *
        from cliente as c
             inner join recordatorios as r
@@ -84,8 +84,8 @@ create view clientes_julio_agosto as
       where r.fecha_inicio >= '07/15/2021' and r.fecha_fin <= '08/15/2021');
 
 /* Mostrar un reporte de todas las tareas del cliente 'Shawn' que tienen un recordatorio. */
-create view tareas_Shawn_recodatorio as
-    (SELECT *
+create or replace view tareas_shawn_recodatorio as
+    (SELECT t.*
        FROM tarea AS t
             INNER JOIN recordatorios AS rc
             ON t.id_tarea = rc.id_tarea
@@ -96,7 +96,7 @@ create view tareas_Shawn_recodatorio as
 
 /* Mostrar un reporte de todas las recomendaciones (nombre, descripcion, categoria)
    dadas por el administrador Alina. */
-CREATE VIEW recomendaciones_administrador_alina AS
+create or replace VIEW recomendaciones_administrador_alina AS
     (SELECT *
        FROM recomendacion
-      WHERE id_admin LIKE 'Alina');
+      WHERE id_admin LIKE 'alina');

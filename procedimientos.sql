@@ -12,6 +12,8 @@ end;
 $$
 language plpgsql;
 
+call ingresar_sonido('mascota','\x10D309');
+
 create or replace procedure actualizar_sonido(
     id int,
     descripcion varchar(255)
@@ -26,6 +28,8 @@ end;
 $$
 language plpgsql;
 
+call actualizar_sonido(13,'escuela');
+
 create or replace procedure eliminar_sonido(
     id int
 )
@@ -37,6 +41,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call eliminar_sonido(15);
 
 -- Tabla cliente
 CREATE OR REPLACE PROCEDURE insertar_cliente(
@@ -56,6 +62,8 @@ END;
 $$
 LANGUAGE plpgsql;
 
+call insertar_cliente('johncotrina','Po-09301','John','Cotrina','johncootrina12@','09509235092')
+
 CREATE OR REPLACE PROCEDURE actualizar_cliente(
     nom_usuario VARCHAR(60),
     mail         VARCHAR(100)
@@ -72,6 +80,8 @@ END;
 $$
 LANGUAGE plpgsql;
 
+call actualizar_cliente('victorec','vctor15@hotmail.com');
+
 CREATE OR REPLACE PROCEDURE eliminar_cliente(
     nom_usuario VARCHAR(60)
 )
@@ -85,6 +95,8 @@ exception when others then
 END;
 $$
 LANGUAGE plpgsql;
+
+call eliminar_cliente('marounefellani');
 
 -- Tabla administrador
 create or replace procedure insertar_administrador(
@@ -102,6 +114,8 @@ end;
 $$
 language plpgsql;
 
+call eliminar_cliente('admin41','PO0-2321');
+
 create or replace procedure actualizar_administrador(
     usuario varchar (50),
     contra varchar (50)
@@ -118,6 +132,9 @@ end;
 $$
 language plpgsql;
 
+-- TODO
+call actualizar_administrador('admin32','340PL-23');
+
 create or replace procedure eliminar_administrador(
     usuario varchar (50)
 )
@@ -129,6 +146,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call eliminar_administrador('admin3');
 
 -- Tabla recomendacion
 create or replace procedure insert_recomendacion(
@@ -149,6 +168,8 @@ end;
 $$
 language plpgsql;
 
+call insert_recomendacion('41','recom41','realiza tu tarea','tarea fisica');
+
 create or replace procedure actualizar_recomendacion(
     id int,
     cat varchar (50)
@@ -163,6 +184,9 @@ end;
 $$
 language plpgsql;
 
+call actualizar_recomendacion(3,'finanzas');
+
+
 create or replace procedure eliminar_recomendacion(
     id int
 )
@@ -174,6 +198,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call actualizar_recomendacion(15);
 
 -- Tabla recomendacion_cliente
 CREATE OR REPLACE PROCEDURE ingresar_recomendacion_cliente(
@@ -190,6 +216,8 @@ END;
 $$
 LANGUAGE plpgsql;
 
+call ingresar_recomendacion_cliente('francisco',41,'10/8/2021');
+
 CREATE OR REPLACE PROCEDURE actualizar_recomendacion_cliente(
     nom_usuario VARCHAR(60),
     id_reco INT,
@@ -205,6 +233,8 @@ END;
 $$
 LANGUAGE plpgsql;
 
+call actualizar_recomendacion_cliente('ruthcv',3,'10/22/2021');
+
 CREATE OR REPLACE PROCEDURE eliminar_recomendacion_cliente(
     nom_usuario VARCHAR(60),
     id_reco INT
@@ -217,6 +247,8 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+
 
 -- Tabla tarea
 create or replace procedure ingresar_tarea(
@@ -236,6 +268,8 @@ end;
 $$
 language plpgsql;
 
+
+
 create or replace procedure actualizar_tarea(
     id int,
     descrip varchar (255)
@@ -250,6 +284,8 @@ end;
 $$
 language plpgsql;
 
+call actualizar_tarea(34, 'Bajar el jitomate');
+
 create or replace procedure eliminar_tarea(
     id int
 )
@@ -261,6 +297,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call eliminar_tarea(34);
 
 -- Tabla recordatorios
 create or replace procedure ingresar_recordatorio(
@@ -282,6 +320,9 @@ end;
 $$
 language plpgsql;
 
+-- TODO
+call ingresar_recordatorio();
+
 create or replace procedure actualizar_recordatorio(
     id_rec int,
     fecha_inc date
@@ -296,6 +337,8 @@ end;
 $$
 language plpgsql;
 
+call actualizar_recordatorio(32, '08/15/2019');
+
 create or replace procedure eliminar_recordatorio(
     id_rec int
 )
@@ -307,6 +350,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call eliminar_recordatorio(3);
 
 /* consultar tarea */
 create or replace procedure consultar_tarea(
@@ -322,6 +367,8 @@ end;
 $$
 language plpgsql;
 
+call consultar_tarea(34);
+
 /* ver calendario : tareas del mes actual */
 create or replace procedure ver_calendario()
 as
@@ -335,6 +382,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call ver_calendario();
 
 /* consultar recordatorio recibe el id tarea */
 CREATE OR REPLACE PROCEDURE consultar_recordatorio(
@@ -350,6 +399,8 @@ END;
 $$
 language plpgsql;
 
+call consultar_recordatorio(2);
+
 /* consultar recomendaciones recibe la categoria */
 CREATE OR REPLACE PROCEDURE consultar_recomendaciones(
     categ VARCHAR (50)
@@ -364,11 +415,12 @@ END;
 $$
 language plpgsql;
 
+call consultar_recomendaciones('hogar');
+
 /* Consultas */
 
 -- Mostrar un reporte de todas las tareas del cliente 'Shawn' que tienen un recordatorio.
-CREATE OR REPLACE PROCEDURE tareas_Shawn_recordatorio(
-)
+CREATE OR REPLACE PROCEDURE tareas_Shawn_recordatorio()
 AS
 $$
 BEGIN
@@ -378,6 +430,7 @@ END;
 $$
 language plpgsql;
 
+call tareas_Shawn_recordatorio();
 
 -- Mostrar un reporte de todas las tareas que no poseen un recordatorio.
 create or replace procedure recomendaciones_administrador_alina()
@@ -390,6 +443,8 @@ end;
 $$
 language plpgsql;
 
+call recomendaciones_administrador_alina();
+
 -- Mostrar un reporte de todas las tareas que han sido ingresados por un administrador.
 create or replace procedure tareas_insert_administrador()
 as
@@ -400,6 +455,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call tareas_insert_administrador();
 
 -- Mostrar un reporte con todos los recordatorios que tienen un sonido asociado.
 create or replace procedure recordatorios_con_sonido()
@@ -412,6 +469,8 @@ end;
 $$
 language plpgsql;
 
+call recordatorios_con_sonido();
+
 -- Mostrar un reporte de todas las recomendaciones (nombre, descripcion, categoria) dadas por el administrador Alina.
 create or replace procedure recomendaciones_administrador_alina ()
 as
@@ -422,6 +481,8 @@ begin
 end;
 $$
 language plpgsql;
+
+call recomendaciones_administrador_alina();
 
 -- ¿Cuántas tareas tiene el cliente Oscar?
 create or replace procedure tareas_oscar()
@@ -434,6 +495,8 @@ end;
 $$
 language plpgsql;
 
+call tareas_oscar();
+
 -- ¿Cuántas tareas tiene el cliente Rasputín en la categoría “ocio”?
 create or replace procedure tareas_lili_ocio()
 as
@@ -445,6 +508,8 @@ end;
 $$
 language plpgsql;
 
+call tareas_lili_ocio();
+
 -- ¿Cuál es el nombre del cliente con más tareas?
 create or replace procedure cliente_mas_tareas()
 as
@@ -455,3 +520,5 @@ begin
 end;
 $$
 language plpgsql;
+
+call cliente_mas_tareas();

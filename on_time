@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Credenciales
+host='ec2-44-194-68-175.compute-1.amazonaws.com'
+user='iyntvqahtxjclg'
+db='dfup9jd0s57ibm'
+
+with_db() {
+    # Don't do this at home kids!
+    # La forma correcta es mantener tus contraseñas en un archivo local ~/.pgpass
+    # https://www.postgresql.org/docs/current/libpq-pgpass.html
+    PGPASSWORD='674d795af08e97686319ef575fb041575593f110bb46f8a3d6693357a53e8c30'\
+        psql -h "$host" -U "$user" -d "$db" $@
+}
+
+usage() {
+    cat <<EOF >&2
+Usage:
+    on_time refresh     run the migration.sql file
+    on_time connect     spawn a psql console connected to the database
+EOF
+}
+
+case "$1" in
+    refresh) with_db -f ./migration.sql ;;
+    connect) with_db ;;
+    *) usage ;;
+esac

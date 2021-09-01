@@ -1,0 +1,34 @@
+Proyecto Bases de Datos 
+=======================
+
+Proyecto de la materia Bases de Datos, ESPOL
+
+Schema
+------
+
+Las sentencias para la creación de los distintos objetos en la base se
+encuentran en los siguientes archivos: 
+
+    db.sql              ->  creación de tablas
+    datos.sql           ->  carga datos en las tablas
+    vistas.sql          ->  crea las vistas
+    procedimientos.sql  ->  crea los procedimientos
+    disparadores.sql    ->  crea los triggers
+
+Probando la Base 
+----------------
+
+Para reiniciar la base puedes ejecutar el siguiente comando:
+
+    on_time refresh
+
+Esto correrá el archivo `migration.sql` con las credenciales adecuadas que
+eliminará todos los datos y creará las tablas, vistas, triggers y
+procedimientos.
+
+Para interactuar con la base corre
+
+    on_time connect
+
+Lo que iniciará una sesión en la consola de psql conectada a la base de datos
+en heroku.
