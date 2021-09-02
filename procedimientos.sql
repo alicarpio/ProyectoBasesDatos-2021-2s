@@ -14,7 +14,6 @@ language plpgsql;
 
 call ingresar_sonido('mascota','\x10D309');
 
-
 create or replace procedure actualizar_sonido(
     id int,
     descr varchar(255)
@@ -241,16 +240,18 @@ CREATE OR REPLACE PROCEDURE eliminar_recomendacion_cliente(
 AS
 $$
 BEGIN
-    DELETE FROM recomendacion_cliente
-    WHERE id_cliente = nom_usuario AND id_recomendacion = id_reco;
+    DELETE
+      FROM recomendacion_cliente
+     WHERE id_cliente = nom_usuario AND id_recomendacion = id_reco;
 END;
 $$
 LANGUAGE plpgsql;
 
--- TODO
+call eliminar_recomendacion_cliente('charlidamel', 11);
 
 -- Tabla tarea
 create or replace procedure ingresar_tarea(
+    idtarea int,
     id_clie varchar (60),
     id_adm varchar (50),
     descripcion varchar (255),
@@ -261,13 +262,13 @@ create or replace procedure ingresar_tarea(
 AS
 $$
 begin
-    insert into tarea (id_cliente, id_admin, descripcion, fecha_inicio, fecha_fin, categoria)
-    values (id_clie, id_adm, descripcion, fecha_inicio, fecha_fin, categoria);
+    insert into tarea (id_tarea, id_cliente, id_admin, descripcion, fecha_inicio, fecha_fin, categoria)
+    values (idtarea, id_clie, id_adm, descripcion, fecha_inicio, fecha_fin, categoria);
 end;
 $$
 language plpgsql;
 
--- TODO
+call ingresar_tarea(1008, 'alegoussas', null, 'Preparar la cena', '09/12/2021', '09/13/2021', 'hogar');
 
 create or replace procedure actualizar_tarea(
     id int,
@@ -301,26 +302,24 @@ call eliminar_tarea(34);
 
 -- Tabla recordatorios
 create or replace procedure ingresar_recordatorio(
-    id_recordatorio int,
     id_tarea int,
     id_cliente varchar (60),
     id_sonido int,
     fecha_inicio date,
     hora_inicio time,
     fecha_fin date,
-    hora_fin date
+    hora_fin time
 )
 AS
 $$
 begin
-    insert into recordatorios (id_recordatorio, id_tarea, id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin)
-    values (id_recordatorio, id_tarea, id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin);
+    insert into recordatorios (id_tarea, id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin)
+    values (id_tarea, id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin);
 end;
 $$
 language plpgsql;
 
--- TODO
--- call ingresar_recordatorio();
+call ingresar_recordatorio(35, 'alegoussas', 23, '03/22/2021', '17:00', '03/23/2021', '17:00');
 
 create or replace procedure actualizar_recordatorio(
     id_rec int,
