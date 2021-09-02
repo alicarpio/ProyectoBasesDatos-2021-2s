@@ -111,7 +111,8 @@ $$
 begin
     perform t.id_cliente
       from tarea as t
-     where t.id_cliente = NEW.id_cliente;
+     where t.id_cliente = NEW.id_cliente
+       and t.id_tarea   = NEW.id_tarea;
 
     if not found then
         raise exception 'Tarea "%" no pertence al usuario "%"', NEW.id_tarea, NEW.id_cliente;
