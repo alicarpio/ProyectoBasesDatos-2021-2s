@@ -1,4 +1,4 @@
-// 1.
+-- 1.
 SELECT *
   FROM sonido;
 
@@ -20,7 +20,7 @@ SELECT *
 SELECT *
   FROM recomendacion_cliente;
 
-// 2.
+-- 2.
 SELECT id_sonido
   FROM sonido;
 
@@ -42,7 +42,7 @@ SELECT id_recordatorio
 SELECT id_cliente, id_recomendacion
   FROM recomendacion_cliente;
 
-// 3.
+-- 3.
 SELECT *
   FROM sonido AS s
  WHERE s.id_sonido = 5;
@@ -71,7 +71,7 @@ SELECT *
   FROM recomendacion_cliente AS r
  WHERE r.id_cliente IN ('ruthcv', 'lilicollins15', 'oscarmoises', 'tinistossel');
 
-// 4.
+-- 4.
 SELECT c.nombre_usuario
   FROM cliente AS c
        INNER JOIN tarea AS t
@@ -104,6 +104,3 @@ SELECT count (id_tarea)
        INNER JOIN cliente AS cl
        ON cl.nombre_usuario = t.id_cliente
  WHERE cl.nombre = 'Oscar';
-
-
-

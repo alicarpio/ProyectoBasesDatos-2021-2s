@@ -23,14 +23,14 @@ drop table if exists recordatorios cascade;
 \i vistas.sql
 \echo 'Views created!'
 
--- Create procedures
-\echo 'Creating procedures...'
-\i procedimientos.sql
-\echo 'Procedures created!'
-
 -- Prepare triggers
 \echo 'Preparing triggers...'
 \i disparadores.sql
 \echo 'Triggers ready!'
+
+-- Create procedures
+\echo 'Creating procedures...'
+\i procedimientos.sql
+\echo 'Procedures created!'
 
 \echo 'Done!'

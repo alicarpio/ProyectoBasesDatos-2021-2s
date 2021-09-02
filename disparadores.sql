@@ -100,3 +100,28 @@ drop trigger if exists actualizar_recordatorio on tarea;
 create trigger actualizar_recordatorio
     after insert on tarea
     for each row execute function actualizar_recordatorio();
+
+/*
+    Este disparador se asegura de que al ingresar un recordatorio el id_tarea especificado sí
+    corresponda a una tarea perteneciente al cliente ingresado.
+*/
+create or replace function checkear_recordatorio_legal()
+returns trigger as
+$$
+begin
+    perform t.id_cliente
+      from tarea as t
+     where t.id_cliente = NEW.id_cliente;
+
+    if not found then
+        raise exception 'Tarea "%" no pertence al usuario "%"', NEW.id_tarea, NEW.id_cliente;
+    end if;
+
+    return NEW;
+end;
+$$ language plpgsql;
+
+drop trigger if exists checkear_recordatorio_legal on recordatorios;
+create trigger checkear_recordatorio_legal
+    before insert or update on recordatorios
+    for each row execute function checkear_recordatorio_legal();
