@@ -66,13 +66,15 @@ create or replace view tareas_lili_ocio as
 
 /* ¿Cuál es el nombre del cliente con más tareas? */
 create or replace view cliente_mas_tareas as
-    (select n.nombre_usuario, max(n.nTareas)
+    (select n.nombre_usuario, max(n.nTareas) as max_tareas
        from (select c.nombre_usuario, count(c.nombre_usuario) as nTareas
                from cliente as c
                     inner join tarea as t
                     on c.nombre_usuario = t.id_cliente
               group by c.nombre_usuario) as n
-      group by n.nombre_usuario);
+      group by n.nombre_usuario
+      order by max(n.nTareas) desc
+      limit 1);
 
 /* Mostrar un reporte de todos los clientes que tienen recordatorios con fecha de
    inicio 15 Julio 2021 y fecha de fin 15 agosto 2021. */
@@ -84,7 +86,7 @@ create or replace view clientes_julio_agosto as
       where r.fecha_inicio >= '07/15/2021' and r.fecha_fin <= '08/15/2021');
 
 /* Mostrar un reporte de todas las tareas del cliente 'Shawn' que tienen un recordatorio. */
-create or replace view tareas_shawn_recodatorio as
+create or replace view tareas_shawn_recordatorio as
     (SELECT t.*
        FROM tarea AS t
             INNER JOIN recordatorios AS rc

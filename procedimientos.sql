@@ -14,21 +14,22 @@ language plpgsql;
 
 call ingresar_sonido('mascota','\x10D309');
 
+
 create or replace procedure actualizar_sonido(
     id int,
-    descripcion varchar(255)
+    descr varchar(255)
 )
 AS
 $$
 begin
     update sonido as s
-       set descripcion = descripcion
+       set descripcion = descr
      where s.id_sonido = id;
 end;
 $$
 language plpgsql;
 
-call actualizar_sonido(13,'escuela');
+call actualizar_sonido(13, 'escuela');
 
 create or replace procedure eliminar_sonido(
     id int
@@ -62,11 +63,11 @@ END;
 $$
 LANGUAGE plpgsql;
 
-call insertar_cliente('johncotrina','Po-09301','John','Cotrina','johncootrina12@','09509235092')
+call insertar_cliente('johncotrina','Po-09301','John','Cotrina','johncootrina12@','09509235092');
 
 CREATE OR REPLACE PROCEDURE actualizar_cliente(
     nom_usuario VARCHAR(60),
-    mail         VARCHAR(100)
+    mail        VARCHAR(100)
 )
 AS
 $$
@@ -78,7 +79,7 @@ exception when others then
     raise notice 'Ocurrio un error al intentar actualizar el cliente';
 END;
 $$
-LANGUAGE plpgsql;
+language plpgsql;
 
 call actualizar_cliente('victorec','vctor15@hotmail.com');
 
@@ -114,7 +115,7 @@ end;
 $$
 language plpgsql;
 
-call eliminar_cliente('admin41','PO0-2321');
+call insertar_administrador('admin41','PO0-2321');
 
 create or replace procedure actualizar_administrador(
     usuario varchar (50),
@@ -132,7 +133,6 @@ end;
 $$
 language plpgsql;
 
--- TODO
 call actualizar_administrador('admin32','340PL-23');
 
 create or replace procedure eliminar_administrador(
@@ -168,7 +168,7 @@ end;
 $$
 language plpgsql;
 
-call insert_recomendacion('41','recom41','realiza tu tarea','tarea fisica');
+call insert_recomendacion('adm415','recom41','realiza tu tarea','tarea fisica');
 
 create or replace procedure actualizar_recomendacion(
     id int,
@@ -186,7 +186,6 @@ language plpgsql;
 
 call actualizar_recomendacion(3,'finanzas');
 
-
 create or replace procedure eliminar_recomendacion(
     id int
 )
@@ -199,24 +198,24 @@ end;
 $$
 language plpgsql;
 
-call actualizar_recomendacion(15);
+call eliminar_recomendacion(15);
 
 -- Tabla recomendacion_cliente
 CREATE OR REPLACE PROCEDURE ingresar_recomendacion_cliente(
-    id_client VARCHAR(60),
-    id_recomen VARCHAR(255),
+    id_client  VARCHAR(60),
+    id_recomen int,
     fech DATE
 )
 AS
 $$
 BEGIN
     INSERT INTO recomendacion_cliente (id_cliente, id_recomendacion, fecha)
-    VALUES (id_client,id_recomen,fech);
+    VALUES (id_client, id_recomen, fech);
 END;
 $$
 LANGUAGE plpgsql;
 
-call ingresar_recomendacion_cliente('francisco',41,'10/8/2021');
+call ingresar_recomendacion_cliente('caradelevigne', 34, '10/8/2021');
 
 CREATE OR REPLACE PROCEDURE actualizar_recomendacion_cliente(
     nom_usuario VARCHAR(60),
@@ -248,7 +247,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
+-- TODO
 
 -- Tabla tarea
 create or replace procedure ingresar_tarea(
@@ -268,7 +267,7 @@ end;
 $$
 language plpgsql;
 
-
+-- TODO
 
 create or replace procedure actualizar_tarea(
     id int,
@@ -302,7 +301,7 @@ call eliminar_tarea(34);
 
 -- Tabla recordatorios
 create or replace procedure ingresar_recordatorio(
-    id_recordatorio serial,
+    id_recordatorio int,
     id_tarea int,
     id_cliente varchar (60),
     id_sonido int,
@@ -321,7 +320,7 @@ $$
 language plpgsql;
 
 -- TODO
-call ingresar_recordatorio();
+-- call ingresar_recordatorio();
 
 create or replace procedure actualizar_recordatorio(
     id_rec int,
@@ -359,166 +358,168 @@ create or replace procedure consultar_tarea(
 )
 AS
 $$
-begin
     select *
       from tarea as t
      where t.id_tarea = idtarea;
-end;
-$$
-language plpgsql;
+$$ language sql;
 
 call consultar_tarea(34);
 
 /* ver calendario : tareas del mes actual */
-create or replace procedure ver_calendario()
-as
+create or replace function ver_calendario()
+returns setof tarea as
 $$
 declare
     month int := extract(Month from now());
 begin
-    select *
+    return query select *
       from tarea as t
      where month = extract(Month from t.fecha_inicio);
 end;
 $$
 language plpgsql;
 
-call ver_calendario();
+select * from ver_calendario();
 
 /* consultar recordatorio recibe el id tarea */
-CREATE OR REPLACE PROCEDURE consultar_recordatorio(
+
+CREATE OR REPLACE function consultar_recordatorio(
      idtarea INT
 )
-AS
+returns setof recordatorios AS
 $$
 BEGIN
-    SELECT *
+    return query SELECT *
       FROM recordatorios AS rec
      WHERE rec.id_tarea = idtarea;
 END;
 $$
 language plpgsql;
 
-call consultar_recordatorio(2);
+select * from consultar_recordatorio(2);
 
 /* consultar recomendaciones recibe la categoria */
-CREATE OR REPLACE PROCEDURE consultar_recomendaciones(
+
+CREATE OR REPLACE function consultar_recomendaciones(
     categ VARCHAR (50)
 )
-AS
+returns setof recomendacion AS
 $$
 BEGIN
-    SELECT *
+    return query SELECT *
       FROM recomendacion AS r
      WHERE r.categoria = categ;
 END;
 $$
 language plpgsql;
 
-call consultar_recomendaciones('hogar');
+select * from consultar_recomendaciones('hogar');
 
 /* Consultas */
 
 -- Mostrar un reporte de todas las tareas del cliente 'Shawn' que tienen un recordatorio.
-CREATE OR REPLACE PROCEDURE tareas_Shawn_recordatorio()
-AS
+CREATE OR REPLACE function tareas_shawn_recordatorio()
+returns setof tarea as
 $$
 BEGIN
-    SELECT *
-      FROM tareas_Shawn_recordatorio;
+     return query SELECT *
+      FROM tareas_shawn_recordatorio;
 END;
 $$
 language plpgsql;
 
-call tareas_Shawn_recordatorio();
+select * from tareas_shawn_recordatorio();
 
 -- Mostrar un reporte de todas las tareas que no poseen un recordatorio.
-create or replace procedure recomendaciones_administrador_alina()
-as
+create or replace function recomendaciones_administrador_alina()
+returns setof recomendacion as
 $$
 begin
-    select *
+     return query select *
       from recomendaciones_administrador_alina;
 end;
 $$
 language plpgsql;
 
-call recomendaciones_administrador_alina();
+select * from recomendaciones_administrador_alina();
 
 -- Mostrar un reporte de todas las tareas que han sido ingresados por un administrador.
-create or replace procedure tareas_insert_administrador()
-as
+create or replace function tareas_insert_administrador()
+returns setof tarea as
 $$
 begin
-    select *
+     return query select *
       from tareas_insert_administrador;
 end;
 $$
 language plpgsql;
 
-call tareas_insert_administrador();
+select * from tareas_insert_administrador();
 
 -- Mostrar un reporte con todos los recordatorios que tienen un sonido asociado.
-create or replace procedure recordatorios_con_sonido()
-as
+create or replace function recordatorios_con_sonido()
+returns setof recordatorios as
 $$
 begin
-    select *
+     return query select *
       from recordatorios_con_sonido;
 end;
 $$
 language plpgsql;
 
-call recordatorios_con_sonido();
+select * from recordatorios_con_sonido();
 
 -- Mostrar un reporte de todas las recomendaciones (nombre, descripcion, categoria) dadas por el administrador Alina.
-create or replace procedure recomendaciones_administrador_alina ()
-as
+create or replace function recomendaciones_administrador_alina()
+returns setof recomendacion as
 $$
 begin
-    select *
+     return query select *
       from recomendaciones_administrador_alina;
 end;
 $$
 language plpgsql;
 
-call recomendaciones_administrador_alina();
+select * from recomendaciones_administrador_alina();
 
 -- ¿Cuántas tareas tiene el cliente Oscar?
-create or replace procedure tareas_oscar()
-as
+create or replace function tareas_oscar()
+returns setof bigint as
 $$
 begin
-    select *
+     return query select *
       from tareas_oscar;
 end;
 $$
 language plpgsql;
 
-call tareas_oscar();
+select * from tareas_oscar();
 
 -- ¿Cuántas tareas tiene el cliente Rasputín en la categoría “ocio”?
-create or replace procedure tareas_lili_ocio()
-as
+create or replace function tareas_lili_ocio()
+returns setof bigint as
 $$
 begin
-    select *
+     return query select *
       from tareas_lili_ocio;
 end;
 $$
 language plpgsql;
 
-call tareas_lili_ocio();
+select * from tareas_lili_ocio();
 
 -- ¿Cuál es el nombre del cliente con más tareas?
-create or replace procedure cliente_mas_tareas()
-as
+create or replace function cliente_mas_tareas()
+returns table(
+    nombre_usuario varchar,
+    max_tareas bigint
+) as
 $$
 begin
-    select *
+     return query select *
       from cliente_mas_tareas;
 end;
 $$
 language plpgsql;
 
-call cliente_mas_tareas();
+select * from cliente_mas_tareas();

@@ -1,4 +1,4 @@
--- Set up db
+-- Set up schema
 drop table if exists sonido cascade;
 drop table if exists cliente cascade;
 drop table if exists administrador cascade;
@@ -12,10 +12,11 @@ drop table if exists recordatorios cascade;
 -- Load data
 \i datos.sql
 
--- Set up views
+-- Create views
 \i vistas.sql
 
--- TODO: procedimientos
+-- Create procedures
+\i procedimientos.sql
 
--- Set up triggers
+-- Prepare triggers
 \i disparadores.sql
