@@ -5,6 +5,10 @@ host='ec2-44-194-68-175.compute-1.amazonaws.com'
 user='iyntvqahtxjclg'
 db='dfup9jd0s57ibm'
 
+# Setup colors
+export PG_COLOR='always'
+export PG_COLORS='error=01;31:warning=01;35:locus=01;92'
+
 with_db() {
     # Don't do this at home kids!
     # La forma correcta es mantener tus contraseñas en un archivo local ~/.pgpass
