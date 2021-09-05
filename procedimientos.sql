@@ -8,6 +8,8 @@ $$
 begin
     insert into sonido (descripcion, sonido)
     values (descripcion, son);
+
+    raise notice 'Sonido ingresado con éxito';
 end;
 $$
 language plpgsql;
@@ -24,6 +26,8 @@ begin
     update sonido as s
        set descripcion = descr
      where s.id_sonido = id;
+
+    raise notice 'Sonido actualizado con éxito';
 end;
 $$
 language plpgsql;
@@ -38,6 +42,8 @@ $$
 begin
     delete from sonido
      where id_sonido = id;
+
+    raise notice 'Sonido eliminado con éxito';
 end;
 $$
 language plpgsql;
@@ -58,6 +64,10 @@ $$
 BEGIN
     INSERT INTO cliente (nombre_usuario, contrasena, nombre, apellido, correo, telefono)
     VALUES (nom_usuario, password, nombre, apellido, correo, telef);
+
+    raise notice 'Cliente insertado con éxito';
+exception when others
+    raise notice 'Ocurrió un error al insertar el cliente';
 END;
 $$
 LANGUAGE plpgsql;
@@ -74,6 +84,8 @@ BEGIN
     UPDATE cliente
        SET correo = mail
     WHERE nombre_usuario = nom_usuario;
+
+    raise notice 'Cliente % actualizado con exito', nom_usuario;
 exception when others then
     raise notice 'Ocurrio un error al intentar actualizar el cliente';
 END;
@@ -90,6 +102,8 @@ $$
 BEGIN
     DELETE FROM cliente
      WHERE nombre_usuario = nom_usuario;
+
+    raise notice 'Cliente % eliminado con éxito', nom_usuario;
 exception when others then
     raise notice 'Ocurrio un error al intentar eliminar el cliente';
 END;
@@ -108,6 +122,8 @@ $$
 begin
     insert into administrador (nombre_usuario, constrasena)
     values (usuario, contrasena);
+
+    raise notice 'Administrador insertado con éxito';
 exception when others then
     raise notice 'Ocurrio un error al intentar insertar el administrador';
 end;
@@ -126,6 +142,8 @@ begin
     update administrador
        set constrasena = contra
      where nombre_usuario = usuario;
+
+    raise notice 'Administrador actualizado con éxito';
 exception when others then
     raise notice 'Ocurrio un error al intentar actualizar el administrador';
 end;
@@ -142,6 +160,8 @@ $$
 begin
     delete from administrador
      where nombre_usuario = usuario;
+
+    raise notice 'Administrador % eliminado con éxito', usuario;
 end;
 $$
 language plpgsql;
@@ -160,6 +180,8 @@ $$
 begin
     insert into recomendacion (id_admin, nombre, descripcion, categoria)
     values (id_adm, nombre, descripcion, cat);
+
+    raise notice 'Recomendación ingresada con éxito';
 exception when others then
     raise notice 'Ocurrio un error al intentar insertar recomendacion';
 
@@ -179,6 +201,8 @@ begin
     update recomendacion
        set categoria = cat
      where id_recomendacion = id;
+
+    raise notice 'Recomendación actualizada con éxito';
 end;
 $$
 language plpgsql;
@@ -193,6 +217,8 @@ $$
 begin
    delete from recomendacion
     where id_recomendacion = id;
+
+    raise notice 'Recomendación eliminada con éxito';
 end;
 $$
 language plpgsql;
@@ -264,6 +290,8 @@ $$
 begin
     insert into tarea (id_tarea, id_cliente, id_admin, descripcion, fecha_inicio, fecha_fin, categoria)
     values (idtarea, id_clie, id_adm, descripcion, fecha_inicio, fecha_fin, categoria);
+
+    raise notice 'Tarea ingresada con éxito';
 end;
 $$
 language plpgsql;
@@ -280,6 +308,8 @@ begin
     update tarea
        set descripcion = descrip
      where id_tarea = id;
+
+    raise notice 'Tarea actualizada con éxito';
 end;
 $$
 language plpgsql;
@@ -294,6 +324,8 @@ $$
 begin
     delete from tarea
      where id_tarea = id;
+
+    raise notice 'Tarea % eliminada con éxito', id;
 end;
 $$
 language plpgsql;
@@ -315,6 +347,8 @@ $$
 begin
     insert into recordatorios (id_tarea, id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin)
     values (id_tarea, id_cliente, id_sonido, fecha_inicio, hora_inicio, fecha_fin, hora_fin);
+
+    raise notice 'Recordatorio ingresado con éxito';
 end;
 $$
 language plpgsql;
@@ -331,6 +365,8 @@ begin
     update recordatorios
        set fecha_inicio = fecha_inc
      where id_recordatorio = id_rec;
+
+    raise notice 'Recordatorio eliminado con éxito';
 end;
 $$
 language plpgsql;
@@ -345,6 +381,8 @@ $$
 begin
     delete from recordatorios
      where id_recordatorio = id_rec;
+
+    raise notice 'Recordatorio eliminado con éxito';
 end;
 $$
 language plpgsql;
