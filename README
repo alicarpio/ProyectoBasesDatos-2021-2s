@@ -20,7 +20,7 @@ Probando la Base
 
 Para reiniciar la base puedes ejecutar el siguiente comando:
 
-    on_time refresh
+    ./on_time refresh
 
 Esto correrá el archivo `migration.sql` con las credenciales adecuadas que
 eliminará todos los datos y creará las tablas, vistas, triggers y
@@ -28,7 +28,7 @@ procedimientos.
 
 Para interactuar con la base corre
 
-    on_time connect
+    ./on_time connect
 
 Lo que iniciará una sesión en la consola de psql conectada a la base de datos
 en heroku.
